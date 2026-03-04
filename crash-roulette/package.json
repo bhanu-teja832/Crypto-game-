@@ -1,0 +1,25 @@
+{
+  "name": "crash-roulette",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Provably fair multiplier betting game on Solana",
+  "workspaces": [
+    "shared",
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev --workspace=server",
+    "dev:web": "npm run dev --workspace=web",
+    "build:shared": "npm run build --workspace=shared",
+    "build:server": "npm run build --workspace=server",
+    "build:web": "npm run build --workspace=web",
+    "build": "npm run build:shared && npm run build:server && npm run build:web",
+    "db:migrate": "npm run prisma:migrate --workspace=server",
+    "db:generate": "npm run prisma:generate --workspace=server"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

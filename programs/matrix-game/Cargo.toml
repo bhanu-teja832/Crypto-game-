@@ -1,0 +1,19 @@
+[package]
+name = "matrix_game"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["cpi"]
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+
+[dependencies]
+anchor-lang = "0.29.0"
+anchor-spl = "0.29.0"
+solana-program = "1.18"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "matrix_game"
+path = "src/lib.rs"

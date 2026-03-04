@@ -1,0 +1,10 @@
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/spl_token_group_interface-6f97c2d1a6d6d000.d: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/instruction.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/state.rs
+
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/spl_token_group_interface-6f97c2d1a6d6d000.wasm: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/instruction.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/state.rs
+
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/libspl_token_group_interface-6f97c2d1a6d6d000.rlib: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/instruction.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/state.rs
+
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/lib.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/error.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/instruction.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-token-group-interface-0.1.0/src/state.rs:

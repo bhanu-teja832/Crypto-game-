@@ -1,0 +1,12 @@
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/spl_pod-cd0c0a5477417c3e.d: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/bytemuck.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/optional_keys.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/primitives.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/slice.rs
+
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/spl_pod-cd0c0a5477417c3e.wasm: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/bytemuck.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/optional_keys.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/primitives.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/slice.rs
+
+/home/user/Crypto-game-/programs/matrix-game/target/wasm32-unknown-unknown/release/deps/libspl_pod-cd0c0a5477417c3e.rlib: /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/lib.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/bytemuck.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/error.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/optional_keys.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/primitives.rs /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/slice.rs
+
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/lib.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/bytemuck.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/error.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/optional_keys.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/primitives.rs:
+/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spl-pod-0.1.0/src/slice.rs:

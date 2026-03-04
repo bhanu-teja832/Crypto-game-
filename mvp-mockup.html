@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana 3x3 Matrix Betting Game - MVP Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .wallet-status {
+            color: #64f4ac;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .wallet-status::before {
+            content: '●';
+            color: #64f4ac;
+            font-size: 1.2em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .game-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .block {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2d3561 0%, #1f2850 100%);
+            border: 2px solid #444;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .block:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #3d4575 0%, #2f3460 100%);
+            transform: translateY(-2px);
+        }
+
+        .block.selected {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .block.winner {
+            border-color: #64f4ac;
+            background: linear-gradient(135deg, #64f4ac 0%, #00d4ff 100%);
+            box-shadow: 0 0 20px rgba(100, 244, 172, 0.8);
+            animation: pulse-win 0.6s ease;
+        }
+
+        @keyframes pulse-win {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .block-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            z-index: 2;
+            margin-bottom: 8px;
+        }
+
+        .block-stats {
+            font-size: 0.75em;
+            color: #aaa;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .block-stats small {
+            display: block;
+            margin: 2px 0;
+        }
+
+        .betting-panel {
+            background: linear-gradient(135deg, #2d3561 0%, #1f2850 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a2e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .balance-label {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .balance-amount {
+            color: #64f4ac;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pool-stats {
+            background: linear-gradient(135deg, #2d3561 0%, #1f2850 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            margin-bottom: 20px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: #aaa;
+            font-size: 0.95em;
+        }
+
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: #aaa;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .results-section {
+            background: linear-gradient(135deg, #2d3561 0%, #1f2850 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+
+        .result-status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .result-title {
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .result-block {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #64f4ac;
+            text-shadow: 0 0 10px rgba(100, 244, 172, 0.5);
+        }
+
+        .game-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(100, 244, 172, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 244, 172, 0.3);
+        }
+
+        .status-label {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .status-active {
+            color: #64f4ac;
+            font-weight: bold;
+        }
+
+        .fee-notice {
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667eea;
+            color: #aaa;
+            font-size: 0.85em;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .demo-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .demo-controls button {
+            font-size: 0.85em;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Solana Matrix Game</h1>
+            <div class="wallet-status">Connected: Phantom Wallet</div>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Column: Game Board -->
+            <div class="game-section">
+                <h2 style="color: #fff; margin-bottom: 15px; font-size: 1.3em;">Game Board</h2>
+
+                <div class="matrix-grid">
+                    <div class="block" onclick="selectBlock(this, 0)">
+                        <div class="block-number">0</div>
+                        <div class="block-stats">
+                            <small>Bets: 2</small>
+                            <small>Pool: 0.5 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 1)">
+                        <div class="block-number">1</div>
+                        <div class="block-stats">
+                            <small>Bets: 0</small>
+                            <small>Pool: 0 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block selected" onclick="selectBlock(this, 2)">
+                        <div class="block-number">2</div>
+                        <div class="block-stats">
+                            <small>Bets: 3</small>
+                            <small>Pool: 0.75 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 3)">
+                        <div class="block-number">3</div>
+                        <div class="block-stats">
+                            <small>Bets: 1</small>
+                            <small>Pool: 0.25 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 4)">
+                        <div class="block-number">4</div>
+                        <div class="block-stats">
+                            <small>Bets: 0</small>
+                            <small>Pool: 0 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 5)">
+                        <div class="block-number">5</div>
+                        <div class="block-stats">
+                            <small>Bets: 2</small>
+                            <small>Pool: 0.5 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 6)">
+                        <div class="block-number">6</div>
+                        <div class="block-stats">
+                            <small>Bets: 1</small>
+                            <small>Pool: 0.25 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 7)">
+                        <div class="block-number">7</div>
+                        <div class="block-stats">
+                            <small>Bets: 4</small>
+                            <small>Pool: 1.0 Ⓢ</small>
+                        </div>
+                    </div>
+                    <div class="block" onclick="selectBlock(this, 8)">
+                        <div class="block-number">8</div>
+                        <div class="block-stats">
+                            <small>Bets: 2</small>
+                            <small>Pool: 0.5 Ⓢ</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pool-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Total Pool</span>
+                        <span class="stat-value">4.70 Ⓢ</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Your Stake</span>
+                        <span class="stat-value">0.25 Ⓢ</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Status</span>
+                        <span class="stat-value">Active 🟢</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Betting Panel -->
+            <div class="game-section">
+                <h2 style="color: #fff; margin-bottom: 15px; font-size: 1.3em;">Place Your Bet</h2>
+
+                <div class="balance-info">
+                    <span class="balance-label">Wallet Balance</span>
+                    <span class="balance-amount">5.48 Ⓢ</span>
+                </div>
+
+                <div class="betting-panel">
+                    <div class="input-group">
+                        <label>Selected Block</label>
+                        <input type="number" id="blockSelect" min="0" max="8" value="2" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Bet Amount (Ⓢ)</label>
+                        <input type="number" id="betAmount" placeholder="0.1" step="0.01" min="0.01" value="0.1">
+                    </div>
+
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(102, 126, 234, 0.3);">
+                        <div class="stat-row">
+                            <span class="stat-label">Potential Return</span>
+                            <span class="stat-value" style="color: #64f4ac;">~0.29 Ⓢ</span>
+                        </div>
+                        <div style="font-size: 0.75em; color: #888; margin-top: 6px;">
+                            (95% of pool ÷ winners)
+                        </div>
+                    </div>
+
+                    <button onclick="placeBet()">Place Bet</button>
+
+                    <div class="fee-notice">
+                        <strong style="color: #667eea;">ℹ️ Game Fee:</strong> 5% goes to game creator. You receive 95% of winnings.
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px; padding-top: 25px; border-top: 1px solid #444;">
+                    <h3 style="color: #fff; margin-bottom: 15px; font-size: 1.1em;">Demo Controls</h3>
+                    <div class="demo-controls">
+                        <button onclick="simulateFinalize()" style="background: linear-gradient(135deg, #00d4ff 0%, #64f4ac 100%);">Finalize Game</button>
+                        <button onclick="claimWinnings()" style="background: linear-gradient(135deg, #ffd700 0%, #ff6b6b 100%);">Claim Winnings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section (hidden by default) -->
+        <div id="resultsSection" style="display: none; margin-top: 30px;">
+            <div class="results-section">
+                <h2 style="color: #fff; margin-bottom: 20px; font-size: 1.3em;">Game Results</h2>
+
+                <div class="result-status">
+                    <div class="result-title">Winning Block</div>
+                    <div class="result-block" id="winningBlockDisplay">--</div>
+                </div>
+
+                <div class="game-status">
+                    <span class="status-label">Game Status</span>
+                    <span class="status-active">Finalized ✓</span>
+                </div>
+
+                <div id="resultMessage" style="padding: 15px; background: rgba(100, 244, 172, 0.1); border-radius: 8px; border: 1px solid rgba(100, 244, 172, 0.3); color: #64f4ac; text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedBlockNum = 2;
+
+        function selectBlock(element, blockNum) {
+            // Remove previous selection
+            document.querySelectorAll('.block.selected').forEach(block => {
+                block.classList.remove('selected');
+            });
+
+            // Add selection to clicked block
+            element.classList.add('selected');
+            selectedBlockNum = blockNum;
+            document.getElementById('blockSelect').value = blockNum;
+
+            // Update potential return (simplified calculation)
+            const betAmount = parseFloat(document.getElementById('betAmount').value) || 0;
+            const potentialReturn = (betAmount * 0.95 / 1).toFixed(2);
+            console.log(`Selected block ${blockNum} with bet ${betAmount}Ⓢ`);
+        }
+
+        function placeBet() {
+            const amount = document.getElementById('betAmount').value;
+            if (amount && amount > 0) {
+                alert(`✓ Bet placed!\n\nBlock: ${selectedBlockNum}\nAmount: ${amount} Ⓢ\n\nWaiting for confirmation...`);
+                // Simulate transaction
+                setTimeout(() => {
+                    alert('Transaction confirmed!');
+                }, 1000);
+            } else {
+                alert('Please enter a valid bet amount');
+            }
+        }
+
+        function simulateFinalize() {
+            const winningBlock = Math.floor(Math.random() * 9);
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('winningBlockDisplay').textContent = winningBlock;
+
+            // Show win/loss message
+            const message = selectedBlockNum === winningBlock
+                ? `🎉 You Won!\n\nPayout: 0.475 Ⓢ (95% of 0.5 Ⓢ pool)`
+                : `❌ You Lost\n\nBetter luck next time!`;
+            document.getElementById('resultMessage').textContent = message;
+
+            // Update block visuals
+            document.querySelectorAll('.block').forEach((block, index) => {
+                block.classList.remove('winner');
+                if (index === winningBlock) {
+                    block.classList.add('winner');
+                }
+            });
+        }
+
+        function claimWinnings() {
+            alert('Claiming your winnings...\n\n✓ Transaction sent\n✓ 0.475 Ⓢ transferred to your wallet\n\nCongratulations!');
+        }
+
+        // Set initial bet amount listener
+        document.getElementById('betAmount').addEventListener('change', function() {
+            const amount = parseFloat(this.value) || 0;
+            // This would update potential return in real version
+        });
+    </script>
+</body>
+</html>

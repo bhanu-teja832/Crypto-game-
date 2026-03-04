@@ -45,6 +45,21 @@ export interface ServerToClientEvents {
     walletAddress: string;
     multiplier: number;
   }) => void;
+  // Cash-out flow (dual-sign)
+  "cashout:sign_tx": (data: {
+    tx: string;
+    multiplier: number;
+    multiplierBps: number;
+    roundId: number;
+  }) => void;
+  "cashout:ok": (data: { txSignature?: string; multiplier?: number; note?: string }) => void;
+  "cashout:error": (data: { message: string }) => void;
+  // Auth
+  "auth:ok": (data: { walletAddress: string }) => void;
+  "auth:error": (data: { message: string }) => void;
+  // Bet
+  "bet:ok": (data: { roundId: number }) => void;
+  "bet:error": (data: { message: string }) => void;
 }
 
 // ─── WebSocket Events (Client → Server) ───
@@ -56,6 +71,7 @@ export interface ClientToServerEvents {
   }) => void;
   "bet:cashOut": () => void;
   "auth:wallet": (walletAddress: string) => void;
+  "cashout:confirmed": (data: { txSignature: string }) => void;
 }
 
 // ─── REST API Types ───

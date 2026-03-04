@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useVerify } from "@/hooks/useHistory";
 
-export default function FairnessPage() {
+function FairnessContent() {
   const searchParams = useSearchParams();
   const [inputHash, setInputHash] = useState(searchParams.get("hash") ?? "");
   const [submitHash, setSubmitHash] = useState(searchParams.get("hash") ?? "");
@@ -151,5 +151,13 @@ else → raw = (100e - h) / (e - h)
         </pre>
       </div>
     </div>
+  );
+}
+
+export default function FairnessPage() {
+  return (
+    <Suspense fallback={<div className="max-w-2xl mx-auto px-4 py-8 text-muted">Loading...</div>}>
+      <FairnessContent />
+    </Suspense>
   );
 }

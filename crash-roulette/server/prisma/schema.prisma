@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Rounds ───────────────────────────────────────────────────────────────────
+
+model Round {
+  id          String   @id @default(cuid())
+  roundNumber Int      @unique
+  crashPoint  Float    // e.g., 1.43
+  seedHash    String   // SHA-256(seed) — published at round start
+  seed        String   // Actual seed — revealed after crash for verification
+  settleTx    String?  // On-chain settle_round tx signature
+  totalBets   Float    @default(0)   // Total SOL wagered
+  totalPayout Float    @default(0)   // Total SOL paid out
+  playerCount Int      @default(0)
+  houseProfit Float    @default(0)   // totalBets - totalPayout
+  startedAt   DateTime
+  crashedAt   DateTime
+  createdAt   DateTime @default(now())
+
+  bets Bet[]
+
+  @@index([crashedAt])
+  @@index([roundNumber])
+  @@index([crashPoint])
+}
+
+// ─── Bets ─────────────────────────────────────────────────────────────────────
+
+model Bet {
+  id            String   @id @default(cuid())
+  walletAddress String
+  roundId       String
+  round         Round    @relation(fields: [roundId], references: [id])
+  amount        Float    // SOL
+  autoCashOut   Float?   // Multiplier threshold, null = manual
+  cashedOutAt   Float?   // Multiplier at cash-out, null = busted
+  payout        Float    @default(0)  // SOL received
+  profit        Float    @default(0)  // payout - amount
+  status        String   // "cashed_out" | "busted"
+  txSignature   String?  // place_bet Solana tx signature
+  cashOutTx     String?  // cash_out Solana tx signature
+  createdAt     DateTime @default(now())
+
+  @@index([walletAddress])
+  @@index([roundId])
+  @@index([walletAddress, createdAt])
+  @@index([status])
+}
+
+// ─── Player Stats ─────────────────────────────────────────────────────────────
+
+model PlayerStats {
+  walletAddress String   @id
+  totalWagered  Float    @default(0)  // Cumulative SOL wagered
+  totalProfit   Float    @default(0)  // Cumulative profit (positive = won)
+  totalPayout   Float    @default(0)  // Cumulative SOL received
+  biggestWin    Float    @default(0)  // Biggest single-round profit in SOL
+  biggestMulti  Float    @default(1)  // Highest multiplier cashed out at
+  gamesPlayed   Int      @default(0)
+  gamesWon      Int      @default(0)  // Rounds where cashedOutAt is not null
+  updatedAt     DateTime @updatedAt
+
+  @@index([totalProfit])
+  @@index([biggestWin])
+  @@index([gamesPlayed])
+}

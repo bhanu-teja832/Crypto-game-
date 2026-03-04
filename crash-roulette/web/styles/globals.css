@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: #0f0f1a;
+}
+
+body {
+  @apply bg-background text-primary font-sans antialiased;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #161625;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a45;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+/* ─── Wallet Adapter Overrides ──────────────────────────────────────────────── */
+
+.wallet-adapter-button {
+  @apply !bg-accent !text-white !rounded-xl !font-semibold !text-sm !px-4 !py-2;
+  transition: all 0.2s ease;
+}
+
+.wallet-adapter-button:hover {
+  @apply !bg-accent-dark;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply !bg-surface !border !border-border;
+}
+
+.wallet-adapter-modal-title {
+  @apply !text-primary;
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  .card {
+    @apply bg-surface border border-border rounded-2xl p-4;
+  }
+
+  .btn-primary {
+    @apply bg-accent hover:bg-accent-dark text-white font-semibold rounded-xl
+           px-6 py-3 transition-all duration-200 active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-crash {
+    @apply bg-crash hover:brightness-110 text-white font-bold rounded-xl
+           px-6 py-3 transition-all duration-200 active:scale-95
+           shadow-crash;
+  }
+
+  .btn-cashout {
+    @apply bg-cashout hover:brightness-110 text-background font-bold rounded-xl
+           px-6 py-4 text-lg transition-all duration-200 active:scale-95
+           shadow-cashout;
+  }
+
+  .multiplier-text {
+    @apply font-mono font-bold tabular-nums tracking-tight;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold;
+  }
+
+  .pill-crash {
+    @apply pill bg-crash/20 text-crash;
+  }
+
+  .pill-cashout {
+    @apply pill bg-cashout/20 text-cashout;
+  }
+
+  .pill-neutral {
+    @apply pill bg-border text-secondary;
+  }
+}
+
+/* ─── Graph Canvas ──────────────────────────────────────────────────────────── */
+
+canvas {
+  display: block;
+}
+
+/* ─── Number animations ─────────────────────────────────────────────────────── */
+
+.multiplier-running {
+  text-shadow: 0 0 30px rgba(129, 140, 248, 0.6);
+}
+
+.multiplier-crashed {
+  text-shadow: 0 0 40px rgba(255, 59, 92, 0.8);
+  animation: crash-shake 0.4s ease-in-out;
+}
+
+@keyframes crash-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+/* ─── Countdown ring ────────────────────────────────────────────────────────── */
+
+.countdown-ring {
+  stroke-dasharray: 251;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 1s linear;
+}
